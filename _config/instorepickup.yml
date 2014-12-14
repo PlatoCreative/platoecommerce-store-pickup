@@ -1,0 +1,11 @@
+---
+name: InstorePickup
+---
+
+ShopConfig:
+  extensions:
+    - 'InstorePickups_Extension'
+
+OrderForm:
+  extensions:
+    - 'InstorePickupModifierField_Extension'
