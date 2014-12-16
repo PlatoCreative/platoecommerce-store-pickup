@@ -92,13 +92,13 @@ class InstorePickup extends DataObject {
 /**
  * So that {@link InstorePickup}s can be created in {@link SiteConfig}.
  */
-class InstorePickups_Extension extends DataExtension {
+class InstorePickup_Extension extends DataExtension {
 	private static $has_many = array(
 		'InstorePickups' => 'InstorePickup'
 	);
 }
 
-class InstorePickupRate_Admin extends ShopAdmin {
+class InstorePickup_Admin extends ShopAdmin {
 	private static $tree_class = 'ShopConfig';
 	
 	private static $allowed_actions = array(

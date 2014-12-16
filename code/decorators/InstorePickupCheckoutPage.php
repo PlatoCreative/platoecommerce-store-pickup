@@ -2,7 +2,7 @@
 
 class InstorePickupCheckoutPage extends DataExtension {	
 	public function onAfterInit(){
-		Requirements::javascript('storepickup/js/InstorePickupModifierField.js');	
+		Requirements::javascript('storepickup/js/InstorePickupModifierField.js');
 	}
 	
 	private static $allowed_actions = array (

@@ -1,22 +1,28 @@
 <?php
-// FlatFeeShippingModification
+
 class InstorePickupModification extends Modification {
 	private static $has_one = array(
 		'InstorePickup' => 'InstorePickup'
 	);
 
 	private static $defaults = array(
-		'SubTotalModifier' => true,
+		'SubTotalModifier' => false,
 		'SortOrder' => 50
 	);
 
 	private static $default_sort = 'SortOrder ASC';
 
 	public function add($order, $value = null) {
+
 		$this->OrderID = $order->ID;
 		$country = Country_Shipping::get()
 				->filter("Code",$order->ShippingCountryCode)
 				->first();
+
+        //die($order->ShippingCountryCode);
+
+
+
 
 		$rates = $this->getInstorePickups($country);
 		if ($rates && $rates->exists()) {
@@ -40,8 +46,9 @@ class InstorePickupModification extends Modification {
 
 	public function getInstorePickups(Country_Shipping $country) {
 		//Get valid rates for this country
-		$countryID = ($country && $country->exists()) ? $country->ID : null;
-		$rates = InstorePickup::get()->filter("CountryID", $countryID);
+
+		//$countryID = ($country && $country->exists()) ? $country->ID : null;
+		$rates = InstorePickup::get();//->filter("CountryID", $countryID);
 		$this->extend("updateInstorePickups", $rates, $country);
 		return $rates;
 	}
@@ -51,11 +58,12 @@ class InstorePickupModification extends Modification {
 		$rate = $this->InstorePickup();
 		$rates = $this->getInstorePickups($rate->Country());
 
+
 		if ($rates && $rates->exists()) {
 			if ($rates->count() > 1) {
 				$field = InstorePickupModifierField_Multiple::create(
 					$this,
-					_t('InstorePickupModification.FIELD_LABEL', 'Shipping'),
+					'Store Location',
 					$rates->map('ID', 'Label')->toArray()
 				)->setValue($rate->ID);
 			} else {
@@ -68,6 +76,7 @@ class InstorePickupModification extends Modification {
 			}
 
 			$fields->push($field);
+
 		}
 
 		if (!$fields->exists()){

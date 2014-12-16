@@ -4,8 +4,7 @@ name: InstorePickup
 
 ShopConfig:
   extensions:
-    - 'InstorePickups_Extension'
-
+    - 'InstorePickup_Extension'
 OrderForm:
   extensions:
     - 'InstorePickupModifierField_Extension'

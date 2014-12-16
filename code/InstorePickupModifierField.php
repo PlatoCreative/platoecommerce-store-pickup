@@ -20,6 +20,7 @@ class InstorePickupModifierField extends ModificationField_Hidden {
 	 * @return String
 	 */
 	public function FieldHolder($properties = array()) {
+
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		Requirements::javascript('storepickup/javascript/InstorePickupModifierField.js');
 		return $this->renderWith($this->template);
@@ -50,7 +51,7 @@ class InstorePickupModifierField extends ModificationField_Hidden {
 	 * @return Boolean True
 	 */
 	public function modifiesSubTotal() {
-		return true;
+		return false;
 	}
 }
 
@@ -101,7 +102,7 @@ class InstorePickupModifierField_Multiple extends ModificationField_Dropdown {
 	 * @return Boolean True
 	 */
 	public function modifiesSubTotal() {
-		return true;
+		return false;
 	}
 }
 
