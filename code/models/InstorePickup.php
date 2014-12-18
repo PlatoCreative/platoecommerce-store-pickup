@@ -7,12 +7,16 @@ class InstorePickup extends DataObject {
 		'Title' => 'Varchar(250)',
 		'Address' => 'HTMLText',
 		'GoogleMap' => 'Text',
-		'Price' => 'Decimal(19,4)'
+		'Price' => 'Decimal(19,4)',
+		'Phone' => 'Varchar(50)',
+		'Fax' => 'Varchar(50)'
 	);
 	
 	private static $has_one = array(
 		'ShopConfig' => 'ShopConfig',
-		'Country' => 'Country_Shipping'
+		'Country' => 'Country_Shipping',
+		'InstorePickupShippingRate' => 'InstorePickupShippingRate',
+		'Region' => 'Region_Shipping'
 	);
 
 	private static $summary_fields = array(
@@ -23,11 +27,15 @@ class InstorePickup extends DataObject {
 	);
 	
 	public function getCMSFields() {
+		$shopConfig = ShopConfig::current_shop_config();
+		
 		return new FieldList(
 			$rootTab = new TabSet('Root',
 				$tabMain = new Tab('InstorePickup',
 					TextField::create('Title', _t('FlatFeeShippingRate.TITLE', 'Title')),
 					TextareaField::create('Address', _t('FlatFeeShippingRate.DESCRIPTION', 'Address')),
+					TextField::create('Phone', _t('FlatFeeShippingRate.PHONE', 'Phone')),
+					TextField::create('Fax', _t('FlatFeeShippingRate.FAX', 'Fax number')),
 					TextField::create('GoogleMap', _t('FlatFeeShippingRate.DESCRIPTION', 'Google Map Link')),
 					LiteralField::create ('Instructions', '
 						<div class="field">
@@ -40,11 +48,37 @@ class InstorePickup extends DataObject {
 							</ol>
 						</div>
 					'),
-					DropdownField::create('CountryID', _t('FlatFeeShippingRate.COUNTRY', 'Country'), Country_Shipping::get()->map()->toArray()),
+					DropdownField::create('CountryID', _t('FlatFeeShippingRate.COUNTRY', 'Country'), Country_Shipping::get()->filter(array('ShopConfigID' => $shopConfig->ID))->map()->toArray()),
+					DropdownField::create('RegionID', _t('FlatFeeShippingRate.REGION', 'Region'), Region_Shipping::get()->filter(array('ShopConfigID' => $shopConfig->ID))->map()->toArray()),
 					PriceField::create('Price')
 				)
 			)
 		);
+	}
+	
+	public function onBeforeWrite(){
+		parent::onBeforeWrite();
+		$shippingRate = InstorePickupShippingRate::get()->first();
+		$shopConfig = ShopConfig::current_shop_config();
+		if(!$shippingRate){
+			// Create a new shipping rate for instore pickup
+			$shippingRate = new 	InstorePickupShippingRate();
+			$shippingRate->Price = 0;
+			
+			// Create new provider
+			$provider = new InstorePickup_WeightBasedShippingProvider();
+			$provider->Name = 'Instore Pickup';
+			$provider->ShopConfigID = $shopConfig->ID;
+			$provider->InstorePickup = 1;
+			$provider->write();
+			$shippingRate->ProviderID = $provider->ID;
+			
+			$shippingRate->ShopConfigID = $shopConfig->ID;
+			$shippingRate->write();
+		}
+		
+		$this->ShopConfigID = $shopConfig->ID;
+		$this->InstorePickupShippingRateID = $shippingRate->ID;
 	}
 	
 	// Return address with line breaks

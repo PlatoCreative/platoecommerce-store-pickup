@@ -5,6 +5,15 @@ name: InstorePickup
 ShopConfig:
   extensions:
     - 'InstorePickup_Extension'
-OrderForm:
+
+CheckoutPage:
   extensions:
-    - 'InstorePickupModifierField_Extension'
+    - InstorePickupCheckoutPage
+
+WeightBasedShippingModification:
+  extensions:
+    - InstorePickup_WeightBasedShippingModification
+
+Region_Shipping:
+  extensions:
+    - InstorePickup_Region_Shipping

@@ -1,5 +1,7 @@
 <?php
-
+/*
+*	InstorePickupCheckoutPage extends CheckoutPage
+*/
 class InstorePickupCheckoutPage extends DataExtension {	
 	public function onAfterInit(){
 		Requirements::javascript('storepickup/js/InstorePickupModifierField.js');
