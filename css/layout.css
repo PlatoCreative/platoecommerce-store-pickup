@@ -1,0 +1,41 @@
+/* 
+	Instore Pickup CSS
+*/
+
+#shippingInfoArea {
+	display:block;
+	width:100%;
+}
+
+.store-pickup-info {
+	display:block;
+	width:100%;
+	padding:0px;
+	margin:0px;	
+}
+
+#StoreSelector {
+	margin:10px 0px 0px 0px;
+	padding:0px;
+}
+
+.store-pickup-info-left, .store-pickup-info-right {
+	display:inline-block;
+	width:44%;
+	padding:15px 3% 0px 3%;
+	margin:0px;
+	height:auto;	
+	vertical-align:top;
+}
+
+.store-pickup-info-left .heading {
+	font-weight:bold;	
+}
+
+.store-pickup-info-right {
+	padding-right:10px;
+}
+
+#storemap {
+	height:200px; width:100%; display:block;	
+}

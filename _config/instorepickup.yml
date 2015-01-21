@@ -6,9 +6,9 @@ ShopConfig:
   extensions:
     - 'InstorePickup_Extension'
 
-CheckoutPage:
+CheckoutPage_Controller:
   extensions:
-    - InstorePickupCheckoutPage
+    - InstorePickupCheckoutPage_Controller
 
 WeightBasedShippingModification:
   extensions:
@@ -17,3 +17,7 @@ WeightBasedShippingModification:
 Region_Shipping:
   extensions:
     - InstorePickup_Region_Shipping
+
+Order:
+  extensions:
+    - InstorePickup_Order

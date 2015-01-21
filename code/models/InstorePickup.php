@@ -23,12 +23,11 @@ class InstorePickup extends DataObject {
 		'Title' => 'Title',
 		'Address' => 'Address',
 		'SummaryOfPrice' => 'Amount',
-		'Country.Title' => 'Country'
+		'Region.Title' => 'Region'
 	);
 	
 	public function getCMSFields() {
 		$shopConfig = ShopConfig::current_shop_config();
-		
 		return new FieldList(
 			$rootTab = new TabSet('Root',
 				$tabMain = new Tab('InstorePickup',
@@ -48,9 +47,9 @@ class InstorePickup extends DataObject {
 							</ol>
 						</div>
 					'),
-					DropdownField::create('CountryID', _t('FlatFeeShippingRate.COUNTRY', 'Country'), Country_Shipping::get()->filter(array('ShopConfigID' => $shopConfig->ID))->map()->toArray()),
-					DropdownField::create('RegionID', _t('FlatFeeShippingRate.REGION', 'Region'), Region_Shipping::get()->filter(array('ShopConfigID' => $shopConfig->ID))->map()->toArray()),
-					PriceField::create('Price')
+					//DropdownField::create('CountryID', _t('FlatFeeShippingRate.COUNTRY', 'Country'), Country_Shipping::get()->filter(array('ShopConfigID' => $shopConfig->ID))->map()),
+					DropdownField::create('RegionID', _t('FlatFeeShippingRate.REGION', 'Region'), Region_Shipping::get()->filter(array('ShopConfigID' => $shopConfig->ID))->map('ID', 'Title')->toArray())
+					//PriceField::create('Price')
 				)
 			)
 		);
