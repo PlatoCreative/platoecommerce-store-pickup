@@ -28,17 +28,18 @@ class InstorePickup_WeightBasedShippingModification extends DataExtension {
 	
 	public function updateWeightShippingRates($rates, $regionCode){
 		$shopConfig = ShopConfig::current_shop_config();
-		$instoreRate = null;
+		$instoreRate = false;
+		
 		if($regionCode){
 			$region = Region_Shipping::get()->filter('Code', $regionCode)->first();
 			if($region && $region->exists()){
 				$instorePickups = InstorePickup::get()->filter(array('RegionID' => $region->ID));
-				if($instorePickups){
+				if($instorePickups->count() > 0){
 					$instoreRate = InstorePickupShippingRate::get()->filter(array('ShopConfigID' => $shopConfig->ID))->first();
 				}
 			}
 		} else {
-			$instoreRate = InstorePickupShippingRate::get()->filter(array('ShopConfigID' => $shopConfig->ID))->first();			
+			//$instoreRate = InstorePickupShippingRate::get()->filter(array('ShopConfigID' => $shopConfig->ID))->first();			
 		}
 		
 		if($instoreRate){
@@ -48,20 +49,4 @@ class InstorePickup_WeightBasedShippingModification extends DataExtension {
 		
 		return $rates;
 	}
-	
-	/*
-	public function updateWeightShippingRatesForm($fields, $rate){
-		$shopConfig = ShopConfig::current_shop_config();
-		//$instorePickup = InstorePickup::get()->filter(array('CountryID' => $rate->CountryID));
-		$instoreRate = InstorePickupShippingRate::get()->filter(array('ShopConfigID' => $shopConfig->ID))->first();
-		$shippingField = $fields->fieldByName('Modifiers[' . $this->owner . ']');
-		
-		if($instoreRate->exists()){
-			//$instoreField = HiddenField::create('instorePickup', '', $instoreRate->ID);
-			//$fields->push($instoreField);
-		}
-		
-		return $fields;
-	}
-	*/
 }
