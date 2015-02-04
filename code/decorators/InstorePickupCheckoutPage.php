@@ -22,6 +22,7 @@ class InstorePickupCheckoutPage_Controller extends DataExtension {
 	
 	public function StoreLocations($request){
 		$shopConfig = ShopConfig::current_shop_config();
+
 		if(Director::is_ajax()){
 			$regionCode = Session::get('ShippingAddressID') ? DataObject::get_by_id('Address_Shipping', Session::get('ShippingAddressID'))->RegionCode : null;
 			$region = $regionCode ? Region_Shipping::get()->filter('Code', $regionCode)->first() : null;
@@ -33,7 +34,7 @@ class InstorePickupCheckoutPage_Controller extends DataExtension {
 			}
 			
 			$currentStore = $request->requestVar('StoreSelector') ? $request->requestVar('StoreSelector') : '';
-			
+
 			$fields = CompositeField::create(
 				DropdownField::create('StoreSelector', '', $stores->map())->setEmptyString('Select a store')->setValue($currentStore),
 				LiteralField::create('StoreSelectedInfo', $this->StorePickupFields($currentStore))
@@ -44,7 +45,6 @@ class InstorePickupCheckoutPage_Controller extends DataExtension {
 	}
 	
 	public function StorePickupFields($storeID = 0){
-		//if(Director::is_ajax()){
 		if($storeID != 0){
 			$storePickup = InstorePickup::get()->filter(array('ID' => $storeID))->first();
 			

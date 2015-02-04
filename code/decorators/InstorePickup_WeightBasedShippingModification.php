@@ -38,8 +38,6 @@ class InstorePickup_WeightBasedShippingModification extends DataExtension {
 					$instoreRate = InstorePickupShippingRate::get()->filter(array('ShopConfigID' => $shopConfig->ID))->first();
 				}
 			}
-		} else {
-			//$instoreRate = InstorePickupShippingRate::get()->filter(array('ShopConfigID' => $shopConfig->ID))->first();			
 		}
 		
 		if($instoreRate){
