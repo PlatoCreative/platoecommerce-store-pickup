@@ -1,5 +1,5 @@
 {
-	"name": "swipestripe/storepickup",
+	"name": "swipestripe/swipestripe-storepickup",
 	"description": "SilverStripe Store Pick Up",
 	"type": "silverstripe-module",
 	"license": "BSD-3-Clause",
