@@ -7,7 +7,7 @@ class InstorePickupCheckoutPage_Controller extends DataExtension {
 		$shopConfig = ShopConfig::current_shop_config();
 		$instoreRate = InstorePickupShippingRate::get()->filter(array('ShopConfigID' => $shopConfig->ID))->first();
 
-		if($instoreRate->exists()){
+		if($instoreRate && $instoreRate->exists()){
 			Requirements::CSS('storepickup/css/layout.css');
 			Requirements::customScript("var instorePickup = " . $instoreRate->ID . ";");
 			Requirements::javascript('storepickup/javascript/InstorePickupModifierField.js');
