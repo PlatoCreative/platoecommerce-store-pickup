@@ -2,7 +2,6 @@
 
 jQuery.noConflict();
 jQuery(document).ready(function($){
-	
 	var storeFormData;
 	
 	// Set here to avoid the form clearing it out
@@ -33,7 +32,7 @@ jQuery(document).ready(function($){
 	
 	$('#StoreSelector').entwine({
 		onchange : function(){
-			setStoreFormData()
+			setStoreFormData();
 		}
 	});
 });
