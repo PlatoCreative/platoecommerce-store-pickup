@@ -11,7 +11,7 @@ class InstorePickup extends DataObject {
 		'Phone' => 'Varchar(50)',
 		'Fax' => 'Varchar(50)'
 	);
-	
+
 	private static $has_one = array(
 		'ShopConfig' => 'ShopConfig',
 		'Country' => 'Country_Shipping',
@@ -25,12 +25,13 @@ class InstorePickup extends DataObject {
 		'SummaryOfPrice' => 'Amount',
 		'Region.Title' => 'Region'
 	);
-	
+
 	public function getCMSFields() {
 		$shopConfig = ShopConfig::current_shop_config();
-		return new FieldList(
-			$rootTab = new TabSet('Root',
-				$tabMain = new Tab('InstorePickup',
+
+		$fields = FieldList::create(
+			TabSet::create('Root',
+				Tab::create('Main',
 					TextField::create('Title', _t('FlatFeeShippingRate.TITLE', 'Title')),
 					TextareaField::create('Address', _t('FlatFeeShippingRate.DESCRIPTION', 'Address')),
 					TextField::create('Phone', _t('FlatFeeShippingRate.PHONE', 'Phone')),
@@ -53,8 +54,12 @@ class InstorePickup extends DataObject {
 				)
 			)
 		);
+
+		$this->extend('updateCMSFields', $fields);
+
+		return $fields;
 	}
-	
+
 	public function onBeforeWrite(){
 		parent::onBeforeWrite();
 		$shippingRate = InstorePickupShippingRate::get()->first();
@@ -63,7 +68,7 @@ class InstorePickup extends DataObject {
 			// Create a new shipping rate for instore pickup
 			$shippingRate = new 	InstorePickupShippingRate();
 			$shippingRate->Price = 0;
-			
+
 			// Create new provider
 			$provider = new InstorePickup_WeightBasedShippingProvider();
 			$provider->Name = 'Instore Pickup';
@@ -71,20 +76,20 @@ class InstorePickup extends DataObject {
 			$provider->InstorePickup = 1;
 			$provider->write();
 			$shippingRate->ProviderID = $provider->ID;
-			
+
 			$shippingRate->ShopConfigID = $shopConfig->ID;
 			$shippingRate->write();
 		}
-		
+
 		$this->ShopConfigID = $shopConfig->ID;
 		$this->InstorePickupShippingRateID = $shippingRate->ID;
 	}
-	
+
 	// Return address with line breaks
 	public function goodAddress(){
-		return nl2br($this->Address);	
+		return nl2br($this->Address);
 	}
-	
+
 	// For the goole map
 	public function LatLong(){
 		$ll = preg_match('/\@([-.0-9]+),([-.0-9]+)/', $this->GoogleMap, $matches);
@@ -93,14 +98,14 @@ class InstorePickup extends DataObject {
 		}
 		return $ll ? ArrayData::create(array('Latitude' => $matches[1], 'Longitude' => $matches[2], 'Nice' => $matches[1] . ',' . $matches[2])) : null;
 	}
-	
+
 	/**
 	 * Label for using on {@link InstorePickupModifierField}s.
 	 */
 	public function Label() {
 		return $this->Title . ' - ' . $this->Price()->Nice();
 	}
-	
+
 	public function SummaryOfPrice() {
 		return $this->Amount()->Nice();
 	}
@@ -115,11 +120,11 @@ class InstorePickup extends DataObject {
 		return $amount;
 	}
 
-	public function Price() {		
+	public function Price() {
 		$amount = $this->Amount();
 		$this->extend('updatePrice', $amount);
 		return $amount;
-	}	
+	}
 }
 
 /**
@@ -133,7 +138,7 @@ class InstorePickup_Extension extends DataExtension {
 
 class InstorePickup_Admin extends ShopAdmin {
 	private static $tree_class = 'ShopConfig';
-	
+
 	private static $allowed_actions = array(
 		'InstorePickupSettings',
 		'InstorePickupSettingsForm',
@@ -194,7 +199,7 @@ class InstorePickup_Admin extends ShopAdmin {
 					}
 				),
 				$this->response
-			); 
+			);
 			return $responseNegotiator->respond($this->getRequest());
 		}
 
@@ -233,11 +238,11 @@ class InstorePickup_Admin extends ShopAdmin {
 		$form->setTemplate('ShopAdminSettings_EditForm');
 		$form->setAttribute('data-pjax-fragment', 'CurrentForm');
 		$form->addExtraClass('cms-content cms-edit-form center ss-tabset');
-		
+
 		if($form->Fields()->hasTabset()){
 			$form->Fields()->findOrMakeTab('Root')->setTemplate('CMSTabSet');
 		}
-		
+
 		$form->setFormAction(Controller::join_links($this->Link($this->sanitiseClassName($this->modelClass)), 'InstorePickup/InstorePickupSettingsForm'));
 		$form->loadDataFrom($shopConfig);
 
@@ -270,7 +275,7 @@ class InstorePickup_Admin extends ShopAdmin {
 				}
 			),
 			$this->response
-		); 
+		);
 		return $responseNegotiator->respond($this->getRequest());
 	}
 
@@ -281,7 +286,7 @@ class InstorePickup_Admin extends ShopAdmin {
 		if(!Permission::check('CMS_ACCESS_' . get_class($this), 'any', $member)){
 			return false;
 		}
-		
+
 		return $this->customise(array(
 			'Title' => 'Instore Pickup Management',
 			'Help' => 'Create instore pickup locations',
