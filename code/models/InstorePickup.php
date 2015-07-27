@@ -9,7 +9,8 @@ class InstorePickup extends DataObject {
 		'GoogleMap' => 'Text',
 		'Price' => 'Decimal(19,4)',
 		'Phone' => 'Varchar(50)',
-		'Fax' => 'Varchar(50)'
+		'Fax' => 'Varchar(50)',
+		'Published' => 'Boolean'
 	);
 
 	private static $has_one = array(
@@ -23,7 +24,8 @@ class InstorePickup extends DataObject {
 		'Title' => 'Title',
 		'Address' => 'Address',
 		'SummaryOfPrice' => 'Amount',
-		'Region.Title' => 'Region'
+		'Region.Title' => 'Region',
+		'Published.Nice' => 'Enabled'
 	);
 
 	public function getCMSFields() {
@@ -33,6 +35,7 @@ class InstorePickup extends DataObject {
 			TabSet::create('Root',
 				Tab::create('Main',
 					TextField::create('Title', _t('FlatFeeShippingRate.TITLE', 'Title')),
+					CheckboxField::create('Published', 'Is this store available for orders?'),
 					TextareaField::create('Address', _t('FlatFeeShippingRate.DESCRIPTION', 'Address')),
 					TextField::create('Phone', _t('FlatFeeShippingRate.PHONE', 'Phone')),
 					TextField::create('Fax', _t('FlatFeeShippingRate.FAX', 'Fax number')),
@@ -66,7 +69,7 @@ class InstorePickup extends DataObject {
 		$shopConfig = ShopConfig::current_shop_config();
 		if(!$shippingRate){
 			// Create a new shipping rate for instore pickup
-			$shippingRate = new 	InstorePickupShippingRate();
+			$shippingRate = new InstorePickupShippingRate();
 			$shippingRate->Price = 0;
 
 			// Create new provider
