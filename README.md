@@ -1,4 +1,4 @@
-silverstripe-swipstripe-storepickup
+platoecommerce-store-pickup
 ===================================
 
-Shipping module for Swipestripe which adds the ability to have multiple stores to select as the in store pickup option
+Shipping module which adds the ability to have multiple stores to select as the in store pickup option
