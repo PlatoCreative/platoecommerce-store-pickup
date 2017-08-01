@@ -12,10 +12,9 @@
 		}
 	],
 	"require": {
-		"php": ">=5.3.2",
-		"silverstripe/cms": "3.*",
-		"silverstripe/framework": "3.*",
-		"plato-creative/platoecommerce-weight-based-shipping": "3.1.*"
+		"silverstripe/framework": "~3.6",
+		"silverstripe/cms": "~3.6",
+		"plato-creative/platoecommerce-weight-based-shipping": "3.6.*"
 	},
 	"minimum-stability": "dev"
 }
