@@ -16,5 +16,8 @@
 		"silverstripe/cms": "~3.6",
 		"plato-creative/platoecommerce-weight-based-shipping": "3.6.*"
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "dev",
+	"extra": {
+		"installer-name": "plato-ecommerce-store-pickup"
+	    }
 }
