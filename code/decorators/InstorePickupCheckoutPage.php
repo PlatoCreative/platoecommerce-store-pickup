@@ -8,9 +8,9 @@ class InstorePickupCheckoutPage_Controller extends DataExtension {
 		$instoreRate = InstorePickupShippingRate::get()->filter(array('ShopConfigID' => $shopConfig->ID))->first();
 
 		if($instoreRate && $instoreRate->exists()){
-			Requirements::CSS('swipestripe-storepickup/css/layout.css');
+			Requirements::CSS('plato-ecommerce-store-pickup/css/layout.css');
 			Requirements::customScript("var instorePickup = " . $instoreRate->ID . ";");
-			Requirements::javascript('swipestripe-storepickup/javascript/InstorePickupModifierField.js');
+			Requirements::javascript('plato-ecommerce-store-pickup/javascript/InstorePickupModifierField.js');
 			Requirements::javascript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false');
 		}
 	}
